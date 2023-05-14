@@ -22,8 +22,8 @@ def pregunta_01():
     40
 
     """
-    return
-
+    filas = tbl0.shape[0]
+    return filas
 
 def pregunta_02():
     """
@@ -33,8 +33,8 @@ def pregunta_02():
     4
 
     """
-    return
-
+    columnas = tbl0.shape[1]
+    return columnas
 
 def pregunta_03():
     """
@@ -50,8 +50,8 @@ def pregunta_03():
     Name: _c1, dtype: int64
 
     """
-    return
-
+    recuento = tbl0['_c1'].value_counts()
+    return recuento.sort_index()
 
 def pregunta_04():
     """
@@ -65,7 +65,8 @@ def pregunta_04():
     E    4.785714
     Name: _c2, dtype: float64
     """
-    return
+    respuesta = tbl0.groupby("_c1")['_c2'].agg("mean")
+    return respuesta
 
 
 def pregunta_05():
@@ -82,7 +83,8 @@ def pregunta_05():
     E    9
     Name: _c2, dtype: int64
     """
-    return
+    respuesta = tbl0.groupby("_c1")['_c2'].agg(max)
+    return respuesta
 
 
 def pregunta_06():
@@ -94,8 +96,11 @@ def pregunta_06():
     ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
     """
-    return
-
+    lista = list(set(tbl1.iloc[:,1]))
+    lista.sort()
+    for i in range(0,len(lista)):
+        lista[i] = lista[i].upper()
+    return lista
 
 def pregunta_07():
     """
@@ -110,8 +115,8 @@ def pregunta_07():
     E    67
     Name: _c2, dtype: int64
     """
-    return
-
+    respuesta = tbl0.groupby("_c1")['_c2'].agg("sum")
+    return respuesta
 
 def pregunta_08():
     """
@@ -128,8 +133,8 @@ def pregunta_08():
     39   39   E    5  1998-01-26    44
 
     """
-    return
-
+    tbl0["suma"] = tbl0['_c0']+tbl0['_c2']
+    return tbl0
 
 def pregunta_09():
     """
@@ -146,8 +151,11 @@ def pregunta_09():
     39   39   E    5  1998-01-26  1998
 
     """
-    return
-
+    años = []
+    for i in tbl0['_c3']:
+        años.append(int(i[:i.index("-")]))
+    tbl0['year'] = años
+    return tbl0
 
 def pregunta_10():
     """
@@ -163,8 +171,26 @@ def pregunta_10():
     3   D                  1:2:3:5:5:7
     4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
-    return
+    c1 = list(tbl0["_c1"])
+    c2 = list(tbl0["_c2"])
 
+    registros = list(tbl0["_c1"].drop_duplicates())
+    registros.sort()
+    nueva_col = []
+    for i in registros:
+        contador = 0 
+        valores = []
+        for j in c1:
+            if i == j:
+                valores.append(c2[contador])
+            contador+=1
+        valores.sort()
+        valoresconcat = ""
+        for i in valores:
+            valoresconcat+=":"+str(i)
+        nueva_col.append(valoresconcat[1:])
+    respuesta = pd.DataFrame({'_c1':registros, '_c2':nueva_col})
+    return respuesta
 
 def pregunta_11():
     """
@@ -182,8 +208,26 @@ def pregunta_11():
     38   38      d,e
     39   39    a,d,f
     """
-    return
+    c0 = list(tbl1["_c0"])
+    c4 = list(tbl1["_c4"])
 
+    registros = list(tbl1["_c0"].drop_duplicates())
+    registros.sort()
+    nueva_col = []
+    for i in registros:
+        contador = 0 
+        valores = []
+        for j in c0:
+            if i == j:
+                valores.append(c4[contador])
+            contador+=1
+        valores.sort()
+        valoresconcat = ""
+        for i in valores:
+            valoresconcat+=","+str(i)
+        nueva_col.append(valoresconcat[1:])
+    respuesta = pd.DataFrame({'_c0':registros, '_c4':nueva_col})
+    return respuesta 
 
 def pregunta_12():
     """
@@ -200,8 +244,27 @@ def pregunta_12():
     38   38                    eee:0,fff:9,iii:2
     39   39                    ggg:3,hhh:8,jjj:5
     """
-    return
+    c0 = list(tbl2["_c0"])
+    c5a = list(tbl2["_c5a"])
+    c5b = list(tbl2["_c5b"])
 
+    registros = list(tbl2["_c0"].drop_duplicates())
+    registros.sort()
+    nueva_col = []
+    for i in registros:
+        contador = 0 
+        valores = []
+        for j in c0:
+            if i == j:
+                valores.append(c5a[contador]+":"+str(c5b[contador]))
+            contador+=1
+        valores.sort()
+        valoresconcat = ""
+        for i in valores:
+            valoresconcat+=","+str(i)
+        nueva_col.append(valoresconcat[1:])
+    respuesta = pd.DataFrame({'_c0':registros, '_c5':nueva_col})
+    return respuesta
 
 def pregunta_13():
     """
@@ -217,4 +280,7 @@ def pregunta_13():
     E    275
     Name: _c5b, dtype: int64
     """
-    return
+    suma = tbl2.groupby("_c0")['_c5b'].agg("sum")
+    tbl02 = pd.concat([tbl0, suma], axis=1)
+    respuesta = tbl02.groupby("_c1")['_c5b'].agg("sum")
+    return respuesta
