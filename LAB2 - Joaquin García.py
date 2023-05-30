@@ -22,6 +22,7 @@ def pregunta_01():
     40
 
     """
+    tbl0 = pd.read_csv("tbl0.tsv", sep="\t")
     filas = tbl0.shape[0]
     return filas
 
@@ -33,6 +34,7 @@ def pregunta_02():
     4
 
     """
+    tbl0 = pd.read_csv("tbl0.tsv", sep="\t")
     columnas = tbl0.shape[1]
     return columnas
 
@@ -50,6 +52,7 @@ def pregunta_03():
     Name: _c1, dtype: int64
 
     """
+    tbl0 = pd.read_csv("tbl0.tsv", sep="\t")
     recuento = tbl0['_c1'].value_counts()
     return recuento.sort_index()
 
@@ -65,9 +68,10 @@ def pregunta_04():
     E    4.785714
     Name: _c2, dtype: float64
     """
+
+    tbl0 = pd.read_csv("tbl0.tsv", sep="\t")
     respuesta = tbl0.groupby("_c1")['_c2'].agg("mean")
     return respuesta
-
 
 def pregunta_05():
     """
@@ -83,6 +87,7 @@ def pregunta_05():
     E    9
     Name: _c2, dtype: int64
     """
+    tbl0 = pd.read_csv("tbl0.tsv", sep="\t")
     respuesta = tbl0.groupby("_c1")['_c2'].agg(max)
     return respuesta
 
@@ -96,6 +101,7 @@ def pregunta_06():
     ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
     """
+    tbl1 = pd.read_csv("tbl1.tsv", sep="\t")
     lista = list(set(tbl1.iloc[:,1]))
     lista.sort()
     for i in range(0,len(lista)):
@@ -115,6 +121,7 @@ def pregunta_07():
     E    67
     Name: _c2, dtype: int64
     """
+    tbl0 = pd.read_csv("tbl0.tsv", sep="\t")
     respuesta = tbl0.groupby("_c1")['_c2'].agg("sum")
     return respuesta
 
@@ -133,6 +140,7 @@ def pregunta_08():
     39   39   E    5  1998-01-26    44
 
     """
+    tbl0 = pd.read_csv("tbl0.tsv", sep="\t")
     tbl0["suma"] = tbl0['_c0']+tbl0['_c2']
     return tbl0
 
@@ -151,9 +159,10 @@ def pregunta_09():
     39   39   E    5  1998-01-26  1998
 
     """
+    tbl0 = pd.read_csv("tbl0.tsv", sep="\t")
     años = []
     for i in tbl0['_c3']:
-        años.append(str(i[:i.index("-")]))
+        años.append(int(i[:i.index("-")]))
     tbl0['year'] = años
     return tbl0
 
@@ -171,6 +180,7 @@ def pregunta_10():
     3   D                  1:2:3:5:5:7
     4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
+    tbl0 = pd.read_csv("tbl0.tsv", sep="\t")
     c1 = list(tbl0["_c1"])
     c2 = list(tbl0["_c2"])
 
@@ -190,7 +200,6 @@ def pregunta_10():
             valoresconcat+=":"+str(i)
         nueva_col.append(valoresconcat[1:])
     respuesta = pd.DataFrame({'_c1':registros, '_c2':nueva_col})
-    respuesta=respuesta.set_index('_c1')
     return respuesta
 
 def pregunta_11():
@@ -209,6 +218,7 @@ def pregunta_11():
     38   38      d,e
     39   39    a,d,f
     """
+    tbl1 = pd.read_csv("tbl1.tsv", sep="\t")
     c0 = list(tbl1["_c0"])
     c4 = list(tbl1["_c4"])
 
@@ -245,6 +255,7 @@ def pregunta_12():
     38   38                    eee:0,fff:9,iii:2
     39   39                    ggg:3,hhh:8,jjj:5
     """
+    tbl2 = pd.read_csv("tbl2.tsv", sep="\t")
     c0 = list(tbl2["_c0"])
     c5a = list(tbl2["_c5a"])
     c5b = list(tbl2["_c5b"])
@@ -281,6 +292,8 @@ def pregunta_13():
     E    275
     Name: _c5b, dtype: int64
     """
+    tbl0 = pd.read_csv("tbl0.tsv", sep="\t")
+    tbl2 = pd.read_csv("tbl2.tsv", sep="\t")
     suma = tbl2.groupby("_c0")['_c5b'].agg("sum")
     tbl02 = pd.concat([tbl0, suma], axis=1)
     respuesta = tbl02.groupby("_c1")['_c5b'].agg("sum")

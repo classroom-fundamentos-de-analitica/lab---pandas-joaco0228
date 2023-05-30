@@ -153,7 +153,7 @@ def pregunta_09():
     """
     años = []
     for i in tbl0['_c3']:
-        años.append(str(i[:i.index("-")]))
+        años.append(int(i[:i.index("-")]))
     tbl0['year'] = años
     return tbl0
 
@@ -190,7 +190,6 @@ def pregunta_10():
             valoresconcat+=":"+str(i)
         nueva_col.append(valoresconcat[1:])
     respuesta = pd.DataFrame({'_c1':registros, '_c2':nueva_col})
-    respuesta=respuesta.set_index('_c1')
     return respuesta
 
 def pregunta_11():
